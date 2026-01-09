@@ -17,7 +17,7 @@ namespace CleanArchitectureProject.Application.UseCases.CompleteTask
         {
             var task = await _repository.GetByIdAsync(command.TaskId);
             if (task == null)
-                throw new Exception("Task not found");
+                return Result.Failure("Task not found");
             task.Complete();
             return Result.Success();
         }

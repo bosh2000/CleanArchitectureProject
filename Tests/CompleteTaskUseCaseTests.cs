@@ -1,6 +1,7 @@
 ﻿using CleanArchitectureProject.Application.UseCases.CompleteTask;
 using CleanArchitectureProject.Domain;
 using FluentAssertions;
+using Microsoft.AspNetCore.SignalR.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,12 +60,12 @@ namespace Tests
             var useCase = new CompleteTaskUseCase(repository);
 
             // Act
-            Func<Task> act = async () =>
+            var result =
                 await useCase.ExecuteAsync(new CompleteTaskCommand { TaskId = 999 });
 
             // Assert
-            await act.Should().ThrowAsync<Exception>()
-                .WithMessage("Task not found");
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Task not found");
         }
     }
 }
